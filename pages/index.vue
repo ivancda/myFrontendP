@@ -7,7 +7,7 @@
     <main class="mainbox">
       <Header></Header>
       <Section></Section>
-      <!-- <Sausage></Sausage> -->
+      <Sausage></Sausage>
     </main>
 
   </div>

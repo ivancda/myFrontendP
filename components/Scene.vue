@@ -6,7 +6,7 @@
 
 <script>
 import * as THREE from 'three'
-import { FirstPersonControls, Sky, Water} from 'three-stdlib'
+import { FirstPersonControls, Sky, Water, FBXLoader} from 'three-stdlib'
 
 export default {
 
@@ -30,6 +30,9 @@ export default {
       // GEO
       startCube: null,
       ballOne: null,
+
+      // anim
+      mixer: null,
     }
   },
 
@@ -52,14 +55,13 @@ export default {
       // this.scene.add(helper )
 
 
-      // this.scene.background = new THREE.Color('skyblue')
+      this.scene.background = new THREE.Color('skyblue')
       this.scene.fog = new THREE.FogExp2( 'white', 0.0005 );
 
 
-      this.userLight = new THREE.PointLight( 0xffffff, 1, 100, 2);
+      this.userLight = new THREE.PointLight( 0xffffff, 1, 300, 2);
       this.userLight.position.set( 100, 50, 0 )
       this.scene.add( this.userLight );
-
 
 
 
@@ -123,10 +125,6 @@ export default {
       this.scene.environment = pmremGenerator.fromScene( sky ).texture;
 
 
-
-
-
-
       // GEO
       // const geometry = new THREE.SphereGeometry( 20, 64, 32, 6, 6.3)
       const boxPic = new THREE.BoxGeometry( 50, 50, 50)
@@ -142,24 +140,29 @@ export default {
       
       Array(200).fill().forEach(this.addBall)
 
-      // const mtlNoteb = new MTLLoader();
-      // const objNoteb = new TDSLoader();
+      const objNoteb = new FBXLoader();
 
-      // mtlNoteb.load('laptop/MacBookPro.mtl', (ele) => {
-        // console.log(ele)
-        
-        // objNoteb.setMaterials(ele)
-        // objNoteb.load('butterfly.3DS', (el) => {
+        objNoteb.load('kneeling_pointing.fbx', (el) => {
           
+          this.mixer = new THREE.AnimationMixer( el );
 
+					const action = this.mixer.clipAction( el.animations[ 0 ] );
+          console.log(action)
+					action.play();
           
-
-          // el.position.y = 100
-          // el.position.z = this.camera.position.z + 100 
-          // el.position.x = this.camera.position.x 
-          // console.log(el)
-          // this.scene.add(el)
-        // })
+          el.traverse((child)=>{
+            if (child instanceof THREE.Mesh) {
+              console.log(child)
+              // apply texture
+              child.material = new THREE.MeshStandardMaterial( { color: 'red', wireframe: true } )
+              child.material.needsUpdate = true;
+            }
+          })
+          el.position.y = 50
+          el.position.z = this.camera.position.z - 200 
+          el.position.x = this.camera.position.x 
+          this.scene.add(el)
+        })
       // })
 
 
@@ -178,7 +181,7 @@ export default {
     
 
       this.scrolling()
-      this.startCube.position.z = this.camera.position.z - 200
+      this.startCube.position.z = this.camera.position.z - 100
       this.startCube.position.x = 180
 
     },
@@ -199,14 +202,14 @@ export default {
 
       // console.log(document.body.getBoundingClientRect())
 
-      const x = this.camera.position.x;
-      const z = this.camera.position.z;
-      this.camera.position.x = (x * Math.cos(.01) + z * Math.sin(.01)) 
-      this.camera.position.z = (z * Math.cos(.01) - x * Math.sin(.01)) 
+      // const x = this.camera.position.x;
+      // const z = this.camera.position.z;
+      // this.camera.position.x = (x * Math.cos(.01) + z * Math.sin(.01)) 
+      // this.camera.position.z = (z * Math.cos(.01) - x * Math.sin(.01)) 
 
-      this.camera.position.y = -this.scrollPos
+      this.camera.position.y = -this.scrollPos +100
 
-      this.startCube.position.y = -this.scrollPos
+      this.startCube.position.y = -this.scrollPos +100
 
       this.ballOne.position.y = -this.scrollPos
 
@@ -228,30 +231,32 @@ export default {
 
     render() {
 
-      const time = performance.now() * 0.001;
+      const time = performance.now() * 0.001
+      const clock = this.clock.getDelta()
 
-      // this.mesh.position.y = Math.sin( time ) * 20 + 5;
-      this.startCube.rotation.x = time * 0.5;
-      this.startCube.rotation.z = time * 0.51;
+
+      // this.mesh.position.y = Math.sin( time ) * 20 + 5
+      this.startCube.rotation.x = time * 0.5
+      this.startCube.rotation.z = time * 0.51
 
       this.userLight.position.x = this.camera.position.x
       this.userLight.position.y = this.camera.position.y
       this.userLight.position.z = this.camera.position.z
 
-      this.water.material.uniforms.time.value += 1.0 / 60.0;
+      this.water.material.uniforms.time.value += 1.0 / 60.0
 
-      this.controls.update( this.clock.getDelta() )
+      this.controls.update( clock )
 
-      this.camera.lookAt(this.ballOne.position)
+      try{this.mixer.update( clock )}catch{}
+
+      // this.camera.lookAt(this.ballOne.position)
       
-      this.renderer.render( this.scene, this.camera );
+      this.renderer.render( this.scene, this.camera )
 
     },
 
 
   }
-
-
 
 }
 </script>
