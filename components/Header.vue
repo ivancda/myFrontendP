@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" variant="dark" class="col-12">
-      <b-navbar-brand class="hdrName">Ivan Coelho</b-navbar-brand>
+    <b-navbar toggleable="lg" class="col-12">
+      <!-- <b-navbar-brand class="hdrName">Ivan Coelho</b-navbar-brand> -->
 
       <b-navbar-nav class="ml-auto">
         
@@ -28,10 +28,11 @@
     </b-navbar>
     
     <b-container class="box">
-      <div class="col-6">
-        <h2>Bem vindo</h2>
-      </div>
       <div class="col-6"></div>
+      <div class="col-6">
+        <h2>Arraste sua tela</h2>
+      </div>
+      
     </b-container>
 
   </div>
@@ -46,7 +47,6 @@ export default {
 <style scoped>
   .box{
     margin-top: 40vh;
-    margin-bottom: 50vh;
     display: flex;
   }
 
@@ -55,7 +55,8 @@ export default {
   }
 
   h2{
-    font-size: 10vh;
+    text-align: center;
+    font-size: 8vh;
     font-family: 'Shadows Into Light', cursive;
   }
 </style>

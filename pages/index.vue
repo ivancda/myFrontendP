@@ -2,12 +2,12 @@
 
   <div >
 
-    <Scene></Scene>
+    <Scene/>
 
     <main class="mainbox">
-      <Header></Header>
-      <Section></Section>
-      <Sausage></Sausage>
+      <Header/>
+      <Sausage/>
+      <Section/>
     </main>
 
   </div>
@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import Section from '~/components/Section.vue'
+// import Section from '~/components/Section.vue'
 
   export default {
-  components: { Section },
+  // components: { Section },
 
   // data() {
   //   return {

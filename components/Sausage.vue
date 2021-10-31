@@ -12,6 +12,6 @@ export default {
 
   .sasa{
     width: 100%;
-    height: 1000vh;
+    height: 300vh;
   }
 </style>

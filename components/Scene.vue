@@ -6,7 +6,7 @@
 
 <script>
 import * as THREE from 'three'
-import { FirstPersonControls, Sky, Water, FBXLoader} from 'three-stdlib'
+import { FBXLoader } from 'three-stdlib'
 
 export default {
 
@@ -20,18 +20,26 @@ export default {
       controls: null,
       clock: new THREE.Clock(),
 
-      sun: null,
-      water: null,
+    
 
-      scrollPos: null,
+      scrollPos: 0,
+      scrollPercent: 0,
 
+      // LIGHTS
       userLight: null,
+      dollLight: null,
+      hemiLight: null,
 
       // GEO
-      startCube: null,
-      ballOne: null,
 
-      // anim
+      doll:null,
+
+      ground: null,
+
+      startCube: null,
+      lookHere: null,
+
+      // ANIMATION
       mixer: null,
     }
   },
@@ -49,141 +57,110 @@ export default {
       this.renderer = new THREE.WebGL1Renderer({canvas: document.querySelector('#bg')})
       this.renderer.setPixelRatio(window.devicePixelRatio)
       this.renderer.setSize(window.innerWidth, window.innerHeight)
+      this.renderer.shadowMap.enabled = true
+      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
-      this.camera.position.set( 100, 50, 0 )
+      this.camera.position.set( 0, 30, 0 )
       // const helper = new THREE.CameraHelper( this.camera )
       // this.scene.add(helper )
 
 
-      this.scene.background = new THREE.Color('skyblue')
-      this.scene.fog = new THREE.FogExp2( 'white', 0.0005 );
+      // this.scene.background = new THREE.Color('skyblue')
+      // this.scene.fog = new THREE.FogExp2( 'white', 0.0005 );
 
 
-      this.userLight = new THREE.PointLight( 0xffffff, 1, 300, 2);
-      this.userLight.position.set( 100, 50, 0 )
-      this.scene.add( this.userLight );
+      // this.userLight = new THREE.PointLight( 0xffffff, 1, 300, 2);
+      // this.userLight.position.set( 100, 50, 0 )
+      // this.scene.add( this.userLight )
+      this.dollLight = new THREE.PointLight('blue', 1, 1000, 1)
+      this.dollLight.castShadow = true
+      this.scene.add( this.dollLight )
 
+      this.dollLight.shadow.mapSize.width = 512; // default
+      this.dollLight.shadow.mapSize.height = 512; // default
+      this.dollLight.shadow.camera.near = 0.5; // default
+      this.dollLight.shadow.camera.far = 500; // default
 
+      // this.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 )
+      // // this.hemiLight.color.setHSL( 0.6, 1, 0.6 )
+      // this.hemiLight.groundColor.setHSL( 0.095, 1, 0.75 )
+      // this.hemiLight.position.set( 0, 50, 0 )
+      // this.scene.add( this.hemiLight )
 
-      // Water
-
-      const waterGeometry = new THREE.PlaneGeometry( 10000, 10000 );
-
-
-      this.water = new Water(
-        waterGeometry,
-        {
-          textureWidth: 256,
-          textureHeight: 256,
-          waterNormals: new THREE.TextureLoader().load( 'waternormals.jpg', function ( texture ) {
-
-            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-          } ),
-          sunDirection: new THREE.Vector3(),
-          sunColor: 0xffffff,
-          waterColor: 0x001e0f,
-          distortionScale: 3.7,
-          // fog: this.scene.fog !== undefined
-        }
-      );
-      
-      this.water.rotation.x = - Math.PI / 2;
-
-      // this.scene.add( this.water );
-
-
-      // Skybox
-      this.sun = new THREE.Vector3()
-
-      const sky = new Sky();
-      sky.scale.setScalar( 100000 );
-      // this.scene.add( sky );
-
-      const skyUniforms = sky.material.uniforms;
-
-      skyUniforms.turbidity.value = 10;
-      skyUniforms.rayleigh.value = 1;
-      skyUniforms.mieCoefficient.value = 0.005;
-      skyUniforms.mieDirectionalG.value = 0.2;
-
-      const parameters = {
-        elevation: 2,
-        azimuth: 180
-      };
-
-      const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
-
-      const phi = THREE.MathUtils.degToRad( 90   - parameters.elevation );
-      const theta = THREE.MathUtils.degToRad( parameters.azimuth );
-
-      this.sun.setFromSphericalCoords( 1, phi, theta );
-
-      sky.material.uniforms.sunPosition.value.copy( this.sun );
-      this.water.material.uniforms.sunDirection.value.copy( this.sun ).normalize();
-
-      this.scene.environment = pmremGenerator.fromScene( sky ).texture;
 
 
       // GEO
+      
       // const geometry = new THREE.SphereGeometry( 20, 64, 32, 6, 6.3)
-      const boxPic = new THREE.BoxGeometry( 50, 50, 50)
-      const myPic = new THREE.TextureLoader().load('mypic.jpg')
-      this.startCube = new THREE.Mesh( boxPic, new THREE.MeshStandardMaterial( { roughness: .6, map: myPic } ))
-      this.scene.add( this.startCube )
+      // const boxPic = new THREE.BoxGeometry( 50, 50, 50)
+      // const myPic = new THREE.TextureLoader().load('mypic.jpg')
+      // this.startCube = new THREE.Mesh( boxPic, new THREE.MeshStandardMaterial( { roughness: .6, map: myPic } ))
+      // this.startCube.position.z = this.camera.position.z -200
+      // this.startCube.position.y = this.camera.position.y +20
+      // this.startCube.castShadow = true
+      // this.scene.add( this.startCube )
 
-      // const ballGeo = new THREE.SphereGeometry( 20)
-      this.ballOne = new THREE.Object3D()
-      this.scene.add( this.ballOne )
+      const groundGeo = new THREE.PlaneGeometry(10000, 10000)
+      const groundMat = new THREE.MeshStandardMaterial( { color: 'gray',  } );
+      this.ground = new THREE.Mesh( groundGeo, groundMat );
+      this.ground.position.y = -9;
+      this.ground.rotation.x = - Math.PI / 2;
+      this.ground.receiveShadow = true;
+      this.scene.add( this.ground );
+
+      // LOOK HERE
+      this.lookHere = new THREE.Object3D()
+      this.lookHere.position.y = 50
+      this.lookHere.position.z = this.camera.position.z - 100
+      this.lookHere.position.x = this.camera.position.x 
+      this.scene.add( this.lookHere )
 
       
-      
-      Array(200).fill().forEach(this.addBall)
+      // BALLSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+      // Array(300).fill().forEach(this.addBall)
 
       const objNoteb = new FBXLoader();
 
         objNoteb.load('kneeling_pointing.fbx', (el) => {
           
-          this.mixer = new THREE.AnimationMixer( el );
+          this.doll = el
 
-					const action = this.mixer.clipAction( el.animations[ 0 ] );
+          this.mixer = new THREE.AnimationMixer( this.doll );
+
+					const action = this.mixer.clipAction( this.doll.animations[ 0 ] );
           console.log(action)
 					action.play();
           
-          el.traverse((child)=>{
+          this.doll.traverse((child)=>{
             if (child instanceof THREE.Mesh) {
               console.log(child)
               // apply texture
-              child.material = new THREE.MeshStandardMaterial( { color: 'red', wireframe: true } )
+              child.material = new THREE.MeshStandardMaterial( { color: 'white', wireframe: true } )
               child.material.needsUpdate = true;
+              child.castShadow = true
+              child.receiveShadow = false
             }
           })
-          el.position.y = 50
-          el.position.z = this.camera.position.z - 200 
-          el.position.x = this.camera.position.x 
-          this.scene.add(el)
+          // this.doll.castShadow = true
+          // this.doll.receiveShadow = false
+          this.doll.position.y = -10
+          this.doll.position.z = this.camera.position.z - 150 
+          this.doll.position.x = this.camera.position.x -100
+          this.scene.add(this.doll)
+          this.scrolling()
         })
-      // })
-
-
-
-
 
       document.body.appendChild( this.renderer.domElement )
 
-      this.controls = new FirstPersonControls( this.camera, this.renderer.domElement )
-      this.controls.movementSpeed = 100
-      this.controls.lookSpeed = 0.2
+      // this.controls = new FirstPersonControls( this.camera, this.renderer.domElement )
+      // this.controls.movementSpeed = 100
+      // this.controls.lookSpeed = 0.2
 
       window.addEventListener( 'resize', this.onWindowResize )
 
       document.body.onscroll = this.scrolling
-    
 
-      this.scrolling()
-      this.startCube.position.z = this.camera.position.z - 100
-      this.startCube.position.x = 180
-
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     },
 
     onWindowResize() {
@@ -195,30 +172,53 @@ export default {
 
 
     scrolling(){
-      const p = window.scrollY
-      if (p !== 0) {this.scrollPos = (Math.round(p))}
-      else{this.scrollPos = p}
+
+      this.scrollPercent = ((document.documentElement.scrollTop || document.body.scrollTop) / ((document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight)) * 100
+      // console.log(this.scrollPercent)
+
+      if (this.scrollPercent===0) {
+        this.camera.position.set( 0, 30, 0 )
+        this.lookHere.position.y = 50
+        this.lookHere.position.z = this.camera.position.z - 100
+        this.lookHere.position.x = this.camera.position.x 
+      }
+
+      if (this.scrollPercent<60) {
+        try{this.mixer.setTime( this.scrollPercent*0.03 )}catch{}
+      }
+
+      // console.log(this.scrollPos)
+      this.camera.position.z -= (this.animHandler(1,20))
+      this.camera.position.y += (this.animHandler(1,20))
+      this.lookHere.position.y+= (this.animHandler(1, 20))
+      this.lookHere.position.x-= (this.animHandler(1, 20))
+
+      this.lookHere.position.x-= (this.animHandler(20, 40))*4
+      this.lookHere.position.z+= (this.animHandler(40, 60))*4
       
+      // this.camera.position.y = -this.scrollPos +100
+      this.dollLight.position=this.lookHere.position
 
-      // console.log(document.body.getBoundingClientRect())
-
-      // const x = this.camera.position.x;
-      // const z = this.camera.position.z;
-      // this.camera.position.x = (x * Math.cos(.01) + z * Math.sin(.01)) 
-      // this.camera.position.z = (z * Math.cos(.01) - x * Math.sin(.01)) 
-
-      this.camera.position.y = -this.scrollPos +100
-
-      this.startCube.position.y = -this.scrollPos +100
-
-      this.ballOne.position.y = -this.scrollPos
+      this.scrollPos = this.scrollPercent
 
     },
-    
+
+    animHandler(s, e){
+      const actual = this.scrollPercent
+      const later = this.scrollPos
+      if (actual>=s&&actual<=e) {
+        const data = actual-later
+        // console.log(actual, later, data)
+        return data
+      }
+      else{
+        return 0
+      }
+    },
 
     addBall(){
-      const randomBall = new THREE.Mesh( new THREE.SphereGeometry( 20), new THREE.MeshStandardMaterial( {roughness: 0, color: 'white' }))
-      const [x,y,z] = Array(3).fill().map(()=> THREE.MathUtils.randFloatSpread(10000))
+      const randomBall = new THREE.Mesh( new THREE.SphereGeometry( 10), new THREE.MeshLambertMaterial( {roughness: 0, color: 'white' }))
+      const [x,y,z] = Array(3).fill().map(()=> THREE.MathUtils.randFloatSpread(5000))
       randomBall.position.set(x,y,z)
       this.scene.add(randomBall)
     },
@@ -231,25 +231,7 @@ export default {
 
     render() {
 
-      const time = performance.now() * 0.001
-      const clock = this.clock.getDelta()
-
-
-      // this.mesh.position.y = Math.sin( time ) * 20 + 5
-      this.startCube.rotation.x = time * 0.5
-      this.startCube.rotation.z = time * 0.51
-
-      this.userLight.position.x = this.camera.position.x
-      this.userLight.position.y = this.camera.position.y
-      this.userLight.position.z = this.camera.position.z
-
-      this.water.material.uniforms.time.value += 1.0 / 60.0
-
-      this.controls.update( clock )
-
-      try{this.mixer.update( clock )}catch{}
-
-      // this.camera.lookAt(this.ballOne.position)
+      this.camera.lookAt(this.lookHere.position)
       
       this.renderer.render( this.scene, this.camera )
 
@@ -264,6 +246,7 @@ export default {
 <style scoped>
 
   canvas {
+    width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
