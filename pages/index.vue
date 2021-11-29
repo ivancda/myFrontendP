@@ -5,9 +5,9 @@
     <Scene/>
 
     <main class="mainbox">
-      <Header/>
-      <Sausage/>
-      <Section/>
+      <!-- <Header/> -->
+      <!-- <Sausage/> -->
+      <!-- <Section/> -->
     </main>
 
   </div>
@@ -34,7 +34,7 @@
 }
 </script>
 
-<style>
+<style scoped>
   @import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Signika+Negative&display=swap');
 
   *{
@@ -55,7 +55,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 99;
+    /* z-index: 99; */
   }
 
 </style>

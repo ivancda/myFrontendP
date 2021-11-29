@@ -1,12 +1,16 @@
 <template>
   
-  <canvas id="bg"></canvas>
-
+  <div>
+    <canvas id="bg"></canvas>
+    <b-btn class="btn" @click="moveCamera">elBUTOON</b-btn>
+  </div>
 </template>
 
 <script>
 import * as THREE from 'three'
-import { FBXLoader } from 'three-stdlib'
+import { FirstPersonControls, ImprovedNoise } from 'three-stdlib'
+import * as TWEEN from "@tweenjs/tween.js";
+
 
 export default {
 
@@ -20,10 +24,6 @@ export default {
       controls: null,
       clock: new THREE.Clock(),
 
-    
-
-      scrollPos: 0,
-      scrollPercent: 0,
 
       // LIGHTS
       userLight: null,
@@ -40,7 +40,11 @@ export default {
       lookHere: null,
 
       // ANIMATION
-      mixer: null,
+
+      texture: null,
+      worldWidth: 40, 
+      worldDepth: 40,
+      mesh: null,
     }
   },
 
@@ -65,14 +69,14 @@ export default {
       // this.scene.add(helper )
 
 
-      // this.scene.background = new THREE.Color('skyblue')
-      // this.scene.fog = new THREE.FogExp2( 'white', 0.0005 );
+      this.scene.background = new THREE.Color('skyblue')
+      // this.scene.fog = new THREE.FogExp2( 'skyblue', 0.0005 );
 
 
-      // this.userLight = new THREE.PointLight( 0xffffff, 1, 300, 2);
-      // this.userLight.position.set( 100, 50, 0 )
-      // this.scene.add( this.userLight )
-      this.dollLight = new THREE.PointLight('blue', 1, 1000, 1)
+      this.userLight = new THREE.PointLight( 0xffffff, 1, 0, 1);
+      this.userLight.position.set( 100, 50, 0 )
+      this.scene.add( this.userLight )
+      this.dollLight = new THREE.PointLight('white', 1, 0, 2)
       this.dollLight.castShadow = true
       this.scene.add( this.dollLight )
 
@@ -81,16 +85,9 @@ export default {
       this.dollLight.shadow.camera.near = 0.5; // default
       this.dollLight.shadow.camera.far = 500; // default
 
-      // this.hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 )
-      // // this.hemiLight.color.setHSL( 0.6, 1, 0.6 )
-      // this.hemiLight.groundColor.setHSL( 0.095, 1, 0.75 )
-      // this.hemiLight.position.set( 0, 50, 0 )
-      // this.scene.add( this.hemiLight )
-
-
 
       // GEO
-      
+
       // const geometry = new THREE.SphereGeometry( 20, 64, 32, 6, 6.3)
       // const boxPic = new THREE.BoxGeometry( 50, 50, 50)
       // const myPic = new THREE.TextureLoader().load('mypic.jpg')
@@ -99,14 +96,39 @@ export default {
       // this.startCube.position.y = this.camera.position.y +20
       // this.startCube.castShadow = true
       // this.scene.add( this.startCube )
+      
+      const data = this.generateHeight( this.worldWidth, this.worldDepth );
+      const geometry = new THREE.PlaneGeometry( 1000, 1000, this.worldWidth - 1, this.worldDepth - 1 );
+				geometry.rotateX( - Math.PI / 2 );
 
-      const groundGeo = new THREE.PlaneGeometry(10000, 10000)
-      const groundMat = new THREE.MeshStandardMaterial( { color: 'gray',  } );
-      this.ground = new THREE.Mesh( groundGeo, groundMat );
-      this.ground.position.y = -9;
-      this.ground.rotation.x = - Math.PI / 2;
-      this.ground.receiveShadow = true;
-      this.scene.add( this.ground );
+				const vertices = geometry.attributes.position.array;
+
+				for ( let i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
+
+					vertices[ j + 1 ] = data[ i ] * 3;
+
+				}
+
+				this.texture = new THREE.CanvasTexture( this.generateTexture( data, this.worldWidth, this.worldDepth ) );
+				this.texture.wrapS = THREE.ClampToEdgeWrapping;
+				this.texture.wrapT = THREE.ClampToEdgeWrapping;
+        
+        // const groundMat = new THREE.MeshStandardMaterial( { color: 'gray',  } );
+				this.mesh = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( {  color: 'gray', } ) );
+        this.mesh.position.y-=200
+				this.scene.add( this.mesh );
+
+
+
+
+
+
+
+
+
+
+
+
 
       // LOOK HERE
       this.lookHere = new THREE.Object3D()
@@ -116,45 +138,60 @@ export default {
       this.scene.add( this.lookHere )
 
       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       // BALLSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-      // Array(300).fill().forEach(this.addBall)
+      Array(400).fill().forEach(this.addBall)
 
-      const objNoteb = new FBXLoader();
+        // const dollD = new FBXLoader();
 
-        objNoteb.load('kneeling_pointing.fbx', (el) => {
-          
-          this.doll = el
+        //   dollD.load('doll.fbx', (el) => {
+            
+        //     this.doll = el
 
-          this.mixer = new THREE.AnimationMixer( this.doll );
+        //     this.mixer = new THREE.AnimationMixer( this.doll );
 
-					const action = this.mixer.clipAction( this.doll.animations[ 0 ] );
-          console.log(action)
-					action.play();
-          
-          this.doll.traverse((child)=>{
-            if (child instanceof THREE.Mesh) {
-              console.log(child)
-              // apply texture
-              child.material = new THREE.MeshStandardMaterial( { color: 'white', wireframe: true } )
-              child.material.needsUpdate = true;
-              child.castShadow = true
-              child.receiveShadow = false
-            }
-          })
-          // this.doll.castShadow = true
-          // this.doll.receiveShadow = false
-          this.doll.position.y = -10
-          this.doll.position.z = this.camera.position.z - 150 
-          this.doll.position.x = this.camera.position.x -100
-          this.scene.add(this.doll)
-          this.scrolling()
-        })
+        // 		const action = this.mixer.clipAction( this.doll.animations[ 0 ] );
+        // 		action.play();
+            
+        //     this.doll.traverse((child)=>{
+        //       if (child instanceof THREE.Mesh) {
+        //         console.log(child)
+        //         // apply texture
+        //         child.material = new THREE.MeshStandardMaterial( { color: 'black', wireframe: true } )
+        //         child.material.needsUpdate = true;
+        //         child.castShadow = true
+        //         child.receiveShadow = false
+        //       }
+        //     })
+        //     // this.doll.castShadow = true
+        //     // this.doll.receiveShadow = false
+        //     this.doll.position.y = -10
+        //     this.doll.position.z = this.camera.position.z - 150 
+        //     this.doll.position.x = this.camera.position.x -100
+        //     this.scene.add(this.doll)
+        //     this.mixer.clipAction( this.doll.animations[ 0 ] ).setDuration( 1 ).play()
+        //   })
 
-      document.body.appendChild( this.renderer.domElement )
+      // document.body.appendChild( this.renderer.domElement )
 
-      // this.controls = new FirstPersonControls( this.camera, this.renderer.domElement )
-      // this.controls.movementSpeed = 100
-      // this.controls.lookSpeed = 0.2
+      this.controls = new FirstPersonControls( this.camera, this.renderer.domElement )
+      this.controls.movementSpeed = 100
+      this.controls.lookSpeed = 0.2
 
       window.addEventListener( 'resize', this.onWindowResize )
 
@@ -171,56 +208,157 @@ export default {
 
 
 
-    scrolling(){
 
-      this.scrollPercent = ((document.documentElement.scrollTop || document.body.scrollTop) / ((document.documentElement.scrollHeight || document.body.scrollHeight) - document.documentElement.clientHeight)) * 100
-      // console.log(this.scrollPercent)
 
-      if (this.scrollPercent===0) {
-        this.camera.position.set( 0, 30, 0 )
-        this.lookHere.position.y = 50
-        this.lookHere.position.z = this.camera.position.z - 100
-        this.lookHere.position.x = this.camera.position.x 
-      }
 
-      if (this.scrollPercent<60) {
-        try{this.mixer.setTime( this.scrollPercent*0.03 )}catch{}
-      }
 
-      // console.log(this.scrollPos)
-      this.camera.position.z -= (this.animHandler(1,20))
-      this.camera.position.y += (this.animHandler(1,20))
-      this.lookHere.position.y+= (this.animHandler(1, 20))
-      this.lookHere.position.x-= (this.animHandler(1, 20))
 
-      this.lookHere.position.x-= (this.animHandler(20, 40))*4
-      this.lookHere.position.z+= (this.animHandler(40, 60))*4
-      
-      // this.camera.position.y = -this.scrollPos +100
-      this.dollLight.position=this.lookHere.position
 
-      this.scrollPos = this.scrollPercent
 
-    },
 
-    animHandler(s, e){
-      const actual = this.scrollPercent
-      const later = this.scrollPos
-      if (actual>=s&&actual<=e) {
-        const data = actual-later
-        // console.log(actual, later, data)
-        return data
-      }
-      else{
-        return 0
-      }
-    },
+
+
+
+
+
+
+
+
+
+    generateHeight( width, height ) {
+
+				let seed = Math.PI / 4;
+				window.Math.random = function () {
+
+					const x = Math.sin( seed ++ ) * 10000;
+					return x - Math.floor( x );
+
+				};
+
+				const size = width * height
+        const data = new Uint8Array( size );
+				const perlin = new ImprovedNoise() 
+        const z = Math.random() * 10;
+
+				let quality = 1;
+
+				for ( let j = 0; j < 4; j ++ ) {
+
+					for ( let i = 0; i < size; i ++ ) {
+
+						const x = i % width
+            const y = ~ ~ ( i / width );
+						data[ i ] += Math.abs( perlin.noise( x / quality, y / quality, z ) * quality * 1.75 );
+
+					}
+
+					quality *= 5;
+
+				}
+
+				return data;
+
+			},
+
+
+
+
+      generateTexture( data, width, height ) {
+
+				let context, image, imageData, shade;
+
+				const vector3 = new THREE.Vector3( 0, 0, 0 );
+
+				const sun = new THREE.Vector3( 1, 1, 1 );
+				sun.normalize();
+
+				const canvas = document.createElement( 'canvas' );
+				canvas.width = width;
+				canvas.height = height;
+
+				context = canvas.getContext( '2d' );
+				context.fillStyle = '#000';
+				context.fillRect( 0, 0, width, height );
+
+				image = context.getImageData( 0, 0, canvas.width, canvas.height );
+				imageData = image.data;
+
+				for ( let i = 0, j = 0, l = imageData.length; i < l; i += 4, j ++ ) {
+
+					vector3.x = data[ j - 2 ] - data[ j + 2 ];
+					vector3.y = 1;
+					vector3.z = data[ j - width * 2 ] - data[ j + width * 2 ];
+					vector3.normalize();
+
+					shade = vector3.dot( sun );
+
+					imageData[ i ] = ( 96 + shade * 128 ) * ( 0.5 + data[ j ] * 0.007 );
+					imageData[ i + 1 ] = ( 32 + shade * 96 ) * ( 0.5 + data[ j ] * 0.007 );
+					imageData[ i + 2 ] = ( shade * 96 ) * ( 0.5 + data[ j ] * 0.007 );
+
+				}
+
+				context.putImageData( image, 0, 0 );
+
+				// Scaled 4x
+
+				const canvasScaled = document.createElement( 'canvas' );
+				canvasScaled.width = width * 4;
+				canvasScaled.height = height * 4;
+
+				context = canvasScaled.getContext( '2d' );
+				context.scale( 4, 4 );
+				context.drawImage( canvas, 0, 0 );
+
+				image = context.getImageData( 0, 0, canvasScaled.width, canvasScaled.height );
+				imageData = image.data;
+
+				for ( let i = 0, l = imageData.length; i < l; i += 4 ) {
+
+					const v = ~ ~ ( Math.random() * 5 );
+
+					imageData[ i ] += v;
+					imageData[ i + 1 ] += v;
+					imageData[ i + 2 ] += v;
+
+				}
+
+				context.putImageData( image, 0, 0 );
+
+				return canvasScaled;
+
+			},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     addBall(){
-      const randomBall = new THREE.Mesh( new THREE.SphereGeometry( 10), new THREE.MeshLambertMaterial( {roughness: 0, color: 'white' }))
-      const [x,y,z] = Array(3).fill().map(()=> THREE.MathUtils.randFloatSpread(5000))
+      const randomBall = new THREE.Mesh( new THREE.SphereGeometry( 10), new THREE.MeshPhongMaterial( {roughness: 0, color: 'white' }))
+      const [x,y,z] = Array(3).fill().map(()=> THREE.MathUtils.randFloatSpread(3000))
       randomBall.position.set(x,y,z)
       this.scene.add(randomBall)
+    },
+
+    moveCamera(){
+      const coords = { x: this.camera.position.x, y: this.camera.position.y, z: this.camera.position.z }
+      new TWEEN.Tween(coords)
+      .to({ x: 1000, y: 1000, z: 1000 })
+      .onUpdate(() =>
+        this.camera.position.set(coords.x, coords.y, coords.z)
+      )
+      .start();
+      console.log('foi')
     },
 
     animate() {
@@ -230,10 +368,14 @@ export default {
 
 
     render() {
-
-      this.camera.lookAt(this.lookHere.position)
-      
+      const clock = this.clock.getDelta()
+      this.userLight.position = this.camera.position
+      // this.camera.lookAt(this.lookHere.position)
+      // this.mixer.update( clock/20 )
+      this.controls.update( clock )
       this.renderer.render( this.scene, this.camera )
+      TWEEN.update(clock);
+
 
     },
 
@@ -246,10 +388,16 @@ export default {
 <style scoped>
 
   canvas {
-    width: 100vw;
+    width: 99vw;
     position: fixed;
     top: 0;
     left: 0;
   }
+
+  /* .btn{
+    position: absolute;
+    top: 10vh;
+    left: 5vw;
+  } */
 
 </style>

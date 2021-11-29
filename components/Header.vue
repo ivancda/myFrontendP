@@ -2,7 +2,7 @@
   <div>
     <b-navbar toggleable="lg" class="col-12">
       <!-- <b-navbar-brand class="hdrName">Ivan Coelho</b-navbar-brand> -->
-
+      asdasdasdsad
       <b-navbar-nav class="ml-auto">
         
         <b-container class="bBox">
@@ -27,13 +27,13 @@
 
     </b-navbar>
     
-    <b-container class="box">
+    <!-- <b-container class="box">
       <div class="col-6"></div>
       <div class="col-6">
         <h2>Arraste sua tela</h2>
       </div>
       
-    </b-container>
+    </b-container> -->
 
   </div>
 </template>
