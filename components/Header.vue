@@ -1,39 +1,15 @@
 <template>
-  <div>
-    <b-navbar toggleable="lg" class="col-12">
-      <!-- <b-navbar-brand class="hdrName">Ivan Coelho</b-navbar-brand> -->
-      asdasdasdsad
-      <b-navbar-nav class="ml-auto">
-        
-        <b-container class="bBox">
-          
-          <b-button href="https://github.com/ivancda">
-            <b-icon-github></b-icon-github>
-          </b-button>
-          <b-button href="https://www.linkedin.com/in/ivancda/">
-            <b-icon-linkedin></b-icon-linkedin>
-          </b-button>
-          <b-button href="https://www.instagram.com/ivnzin/">
-            <b-icon-instagram></b-icon-instagram>
-          </b-button>
-          <b-button href="https://www.facebook.com/ivancdaraujo/">
-            <b-icon-facebook></b-icon-facebook>
-          </b-button>
-          
-          
-        </b-container>
-        
-      </b-navbar-nav>
+  <div class="d-flex flex-column align-itens-center justify-content-sm-between mainBox">
+    <b-container class="col12 titleBox">
+      <h1>Ivan Coelho</h1>
+      <h2>Frontend Dev</h2>
+    </b-container>
 
-    </b-navbar>
-    
-    <!-- <b-container class="box">
-      <div class="col-6"></div>
-      <div class="col-6">
-        <h2>Arraste sua tela</h2>
-      </div>
-      
-    </b-container> -->
+    <b-container class="buttonBox d-flex align-itens-center justify-content-sm-around">
+      <b-link>Contato</b-link>
+      <b-link>Portfolio</b-link>
+      <b-link>Sobre</b-link>
+    </b-container>
 
   </div>
 </template>
@@ -45,18 +21,29 @@ export default {
 </script>
 
 <style scoped>
-  .box{
-    margin-top: 40vh;
+  @font-face {
+    font-family: hdrFont;
+    src: url('../assets/fonts/GloriaHallelujah-Regular.ttf');
+  }
+
+  .mainBox{
+    height: 100vh;
+  }
+
+  .titleBox{
+    font-family: hdrFont;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
   }
 
-  .bBox{
-    gap: 1rem;
+  .buttonBox{
+    font-family: hdrFont;
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 6rem;
   }
-
-  h2{
-    text-align: center;
-    font-size: 8vh;
-    font-family: 'Shadows Into Light', cursive;
-  }
+  
 </style>

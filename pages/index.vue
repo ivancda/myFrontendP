@@ -5,9 +5,8 @@
     <Scene/>
 
     <main class="mainbox">
-      <!-- <Header/> -->
-      <!-- <Sausage/> -->
-      <!-- <Section/> -->
+      <Header/>
+      
     </main>
 
   </div>
@@ -35,11 +34,15 @@
 </script>
 
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&family=Signika+Negative&display=swap');
+  @font-face {
+    font-family: mainFont;
+    src: url('../assets/fonts/SourceSansPro-Regular.ttf');
+  }
+    
 
   *{
     font-size: 18px;
-    font-family: 'Signika Negative', sans-serif;
+    font-family: mainFont;
     padding:0;
     margin: 0;
     color: white;

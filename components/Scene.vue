@@ -15,7 +15,7 @@ export default {
 
       renderer: null,
       scene: new THREE.Scene(),
-      camera: new CinematicCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 ),
+      camera: new CinematicCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 ),
 
       // LIGHTS
       light1: null,
@@ -48,7 +48,8 @@ export default {
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
       console.log(this.camera)
-      this.camera.setLens(40)
+      this.camera.setLens(25)
+      this.camera.fov = 60
 
       // LIGHTS
       // const sphere = new THREE.SphereGeometry(3)
@@ -93,7 +94,6 @@ export default {
       this.lookHere = new THREE.Object3D()
       this.lookHere.position.y = 30
       this.scene.add( this.lookHere )
-      this.camera.focusAt(this.lookHere)
 
       // RABBIT MODEL
       const rabLoader = new OBJLoader()
@@ -115,7 +115,7 @@ export default {
       })
 
       // BALLSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-      Array(200).fill().forEach(this.addBall)
+      // Array(200).fill().forEach(this.addBall)
 
       document.body.appendChild( this.renderer.domElement )
       window.addEventListener( 'resize', this.onWindowResize )
