@@ -48,7 +48,7 @@ export default {
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
       console.log(this.camera)
-      this.camera.setLens(25)
+      this.camera.setLens(10)
       this.camera.fov = 60
 
       // LIGHTS
@@ -61,7 +61,7 @@ export default {
       this.light1.shadow.mapSize.width = 1024
       this.light1.shadow.mapSize.height = 1024
 
-      this.light2 = new THREE.PointLight( 'green', 1, 200, 2 )
+      this.light2 = new THREE.PointLight( 'springgreen', 1, 200, 2 )
       // this.light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 'green' } ) ) )
       this.light2.position.set( -30, 50, 20 )
       this.light2.castShadow = true
@@ -69,7 +69,7 @@ export default {
       this.light2.shadow.mapSize.width = 1024
       this.light2.shadow.mapSize.height = 1024
 
-      this.light3 = new THREE.PointLight( 'blue', 1, 200, 2 )
+      this.light3 = new THREE.PointLight( 'skyblue', 1, 200, 2 )
       // this.light3.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 'blue' } ) ) )
       this.light3.position.set( 0, 50, -50 )
       this.light3.castShadow = true
@@ -103,7 +103,7 @@ export default {
           if (child instanceof THREE.Mesh) {
             // console.log(child)
             // apply texture
-            child.material = new THREE.MeshStandardMaterial( { color: 'white'} )
+            child.material = new THREE.MeshPhongMaterial( { color: 'white'} )
             child.material.needsUpdate = true;
             child.receiveShadow = true
             child.castShadow = true
@@ -115,7 +115,7 @@ export default {
       })
 
       // BALLSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
-      // Array(200).fill().forEach(this.addBall)
+      Array(200).fill().forEach(this.addBall)
 
       document.body.appendChild( this.renderer.domElement )
       window.addEventListener( 'resize', this.onWindowResize )

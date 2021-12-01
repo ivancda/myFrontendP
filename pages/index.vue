@@ -6,7 +6,7 @@
 
     <main class="mainbox">
       <Header/>
-      
+      <Contato/>
     </main>
 
   </div>
@@ -36,7 +36,7 @@
 <style scoped>
   @font-face {
     font-family: mainFont;
-    src: url('../assets/fonts/SourceSansPro-Regular.ttf');
+    src: url('../assets/fonts/MPLUS2-Regular.ttf');
   }
     
 
@@ -49,8 +49,9 @@
   }
 
   .mainbox{
+    
+    width: 100%;
 
-    width: 100vw;
 
   }
 
