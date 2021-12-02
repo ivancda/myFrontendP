@@ -6,7 +6,8 @@
 
     <main class="mainbox">
       <Header/>
-      <Contato/>
+      <Portfolio/>
+      <!-- <Contato/> -->
     </main>
 
   </div>
@@ -17,6 +18,7 @@
 // import Section from '~/components/Section.vue'
 
   export default {
+    css:['@/assets/css/main.scss']
   // components: { Section },
 
   // data() {
@@ -62,4 +64,5 @@
     /* z-index: 99; */
   }
 
+  
 </style>

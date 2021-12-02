@@ -31,10 +31,10 @@
         </div>
       </div>
       <div class="linkBox d-flex align-items-center justify-content-center p-3">
-        <a href="http://"><b-icon icon="facebook" font-scale="2"></b-icon></a>
-        <a href="http://"><b-icon icon="instagram" font-scale="2"></b-icon></a>
-        <a href="http://"><b-icon icon="linkedin" font-scale="2"></b-icon></a>
-        <a href="http://"><b-icon icon="github" font-scale="2"></b-icon></a>
+        <a href="http://"><b-icon icon="facebook"></b-icon></a>
+        <a href="http://"><b-icon icon="instagram"></b-icon></a>
+        <a href="http://"><b-icon icon="linkedin"></b-icon></a>
+        <a href="http://"><b-icon icon="github"></b-icon></a>
       </div>
     </div>
   </div>
@@ -62,7 +62,7 @@ export default {
 
   .cardsBox{
     color: black;
-    gap: 5rem;
+    gap: 3vw;
   }
 
   .card{
@@ -102,18 +102,24 @@ export default {
   }
 
   .linkBox a{
-    background-color: black;
-    color: white;
-    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: 2rem;
+    background-color: white;
+    color: black;
+    padding: .5rem;
     border-radius: 50%;
-    box-shadow: 0px -2px 0px 1px gray inset;
     transition: 500ms;
+    box-shadow: 0px -2px 0px 1px gray inset;
+
   }
 
   .linkBox a:hover{
     background-color: gray;
     color: black;
-    box-shadow: 0;
+    box-shadow: 0px 0px 0px 0px gray inset;
   }
 
 </style>

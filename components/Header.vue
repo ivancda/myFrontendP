@@ -1,15 +1,19 @@
 <template>
-  <div class="d-flex flex-column align-items-center justify-content-sm-between mainBox">
-    <b-container class="col12 titleBox">
-      <h1>Ivan Coelho</h1>
-      <h2>Frontend Dev</h2>
-    </b-container>
+  <div class="d-flex flex-column align-items-center mainBox">
+    
 
-    <b-container class="buttonBox d-flex align-items-center justify-content-sm-around">
-      <b-link>Contato</b-link>
-      <b-link>Portfolio</b-link>
-      <b-link>Sobre</b-link>
-    </b-container>
+    <div class="buttonBox d-flex align-items-center justify-content-center">
+      <b-link href="#elPort">Portfolio</b-link>
+      <b-link>About</b-link>
+      <b-link>Get in touch</b-link>
+      
+      
+    </div>
+
+    <div class="col12 titleBox">
+      <h1>Ivan Coelho</h1>
+      <h2>Fullstack Web Dev</h2>
+    </div>
 
   </div>
 </template>
@@ -34,16 +38,26 @@ export default {
     font-family: hdrFont;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 3rem;
+    padding: 1rem;
+    border: 1px solid white;
+    color: #FFFFFF;
   }
 
   .buttonBox{
     font-family: hdrFont;
     color: white;
     font-size: 2rem;
-    margin-bottom: 6rem;
+    padding-bottom: 4rem;
+    padding-top: 2rem;
+    gap: 3rem;
+    color: #FFFFFF;
+    width: 100%;
   }
   
+  .buttonBox a{
+    color: white;
+    font-size: 1rem;
+
+  }
+
 </style>

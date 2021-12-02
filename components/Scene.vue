@@ -48,7 +48,7 @@ export default {
       this.renderer.shadowMap.type = THREE.PCFSoftShadowMap
 
       console.log(this.camera)
-      this.camera.setLens(10)
+      this.camera.setLens(20)
       this.camera.fov = 60
 
       // LIGHTS
@@ -69,7 +69,7 @@ export default {
       this.light2.shadow.mapSize.width = 1024
       this.light2.shadow.mapSize.height = 1024
 
-      this.light3 = new THREE.PointLight( 'skyblue', 1, 200, 2 )
+      this.light3 = new THREE.PointLight( 'blue', 1, 200, 2 )
       // this.light3.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 'blue' } ) ) )
       this.light3.position.set( 0, 50, -50 )
       this.light3.castShadow = true
@@ -92,7 +92,7 @@ export default {
 
       // LOOK HERE
       this.lookHere = new THREE.Object3D()
-      this.lookHere.position.y = 30
+      this.lookHere.position.y = 50
       this.scene.add( this.lookHere )
 
       // RABBIT MODEL
