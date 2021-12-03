@@ -16,6 +16,7 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.15.1",
+    "gsap": "^3.8.0",
     "nuxt": "^2.15.7",
     "three": "^0.133.1",
     "three-stdlib": "^2.4.2"

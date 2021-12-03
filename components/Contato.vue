@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-end justify-content-center contato p-3">
+  <div id="elContat" class="d-flex align-items-end justify-content-center contato p-3">
 
 
     <div class="d-flex flex-column align-items-center justify-content-center contBox">

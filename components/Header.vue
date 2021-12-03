@@ -4,8 +4,8 @@
 
     <div class="buttonBox d-flex align-items-center justify-content-center">
       <b-link href="#elPort">Portfolio</b-link>
-      <b-link>About</b-link>
-      <b-link>Get in touch</b-link>
+      <b-link >About</b-link>
+      <b-link href="#elContat">Get in touch</b-link>
       
       
     </div>
@@ -27,7 +27,7 @@ export default {
 <style scoped>
   @font-face {
     font-family: hdrFont;
-    src: url('../assets/fonts/GloriaHallelujah-Regular.ttf');
+    src: url('../assets/fonts/RobotoMono-Regular.ttf');
   }
 
   .mainBox{
@@ -38,7 +38,7 @@ export default {
     font-family: hdrFont;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: .5rem;
     border: 1px solid white;
     color: #FFFFFF;
   }
