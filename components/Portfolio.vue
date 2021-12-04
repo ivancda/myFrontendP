@@ -1,28 +1,16 @@
 <template>
-  <div class="portContainer d-flex align-items-center justify-content-center" id="elPort">
+  <div class="portContainer d-flex align-items-center justify-content-center">
     
-    <div class="portInnerCont d-flex ">
-      <div
-      class="portItem d-flex flex-column "
-      v-for="(item,i) in projetos"
-      :key="i"
-      >
-      <div class="imgCont">
-        <img
-          class="img"
-          :src="item.linkImg"
-          alt="image slot"
-        >
-      </div>
-      <div class="content">
-        <h3 >{{item.nome}}</h3>
-        <p >{{item.descricao}}, check <b-link :href="item.linkLive">live-page</b-link> or the <a :href="item.linkLive">repo</a>!</p>
-      </div>
-      </div>
-      <div class="turn flex-column align-items-center justify-content-center">
-        <p>Turn Your Device!</p>
-        <b-icon icon="phone" class="mb-4" animation="cylon-vertical" font-scale="1.5"></b-icon>
-      </div>
+    <div class="elTitle">
+      <h3>{{ title }}</h3>
+    </div>
+
+    <div class="contentBox">
+      <p>{{ desc }}</p>
+        <div class="d-flex flex-column">
+          <a href="">repo</a>
+          <a href="">live page</a>
+        </div>
     </div>
 
   </div>
@@ -30,31 +18,73 @@
 
 <script>
 export default {
+
+  props:{
+    pos: {
+      type: Number,
+      required: false,
+      default: null
+    },
+  },
+
   data(){
     return {
+
+      title:'1',
+      desc:'2',
+      link1:'3',
+      link2:'4',  
+
       projetos: [
         {
           nome: 'IP Address Tracker',
           linkImg: 'https://raw.githubusercontent.com/ivancda/frontendMentor7/main/screen.png',
           linkRepo: '',
           linkLive: '',
-          descricao: 'Ip geolocation tracker, made with two APIs and a lot of vanilla javascript',
+          descricao: 'Ip geolocation tracker',
         },
         {
           nome: 'Loopstudios Landing Page',
           linkImg: 'https://raw.githubusercontent.com/ivancda/frontendMentor2/main/screen.png',
           linkRepo: 'https://github.com/ivancda/frontendMentor2',
           linkLive: 'https://ivancda.github.io/frontendMentor2/',
-          descricao: '3 section landing page with',
+          descricao: '3 section landing page',
         },
         {
-          nome: 'Loopstudios Landing Page',
+          nome: '3',
           linkImg: 'https://raw.githubusercontent.com/ivancda/frontendMentor2/main/screen.png',
           linkRepo: 'https://github.com/ivancda/frontendMentor2',
           linkLive: 'https://ivancda.github.io/frontendMentor2/',
-          descricao: '3 section landing page with',
+          descricao: '3',
         },
       ]
+    }
+  },
+
+  watch:{
+    pos(val){
+      // console.log(val)
+      if (val<4) {
+        this.portContent(val)
+      }
+    },
+  },
+
+  mounted(){
+    this.portContent(1)
+  },
+
+  methods:{
+    portContent(position){
+      const pos = position-1
+      let content = {}
+      if (pos>=0) {
+        content = this.projetos[pos]
+      }
+      this.title = content.nome
+      this.desc = content.descricao
+      this.link1 = content.linkRepo
+      this.link2 = content.linkLive
     }
   }
 
@@ -63,69 +93,39 @@ export default {
 
 <style scoped>
 
-  .portContainer{
-    min-height: 100vh;
-    /* padding: 5vw; */
-    background-color: rgba(0, 0, 0, .8);
+  .elTitle{
+    position: absolute;
+    top: 6rem;
+    z-index: 1;
+    width: 80vw;
+    display: flex;
+    justify-content: center;
   }
 
-  .portInnerCont{
-    overflow-x: auto;
-    gap: 3rem;
-    padding: 3rem;
+  h3{
+    background-color: rgba(0, 0, 0, .6);
+    font-size: 1.4rem;
+    color: white;
   }
 
-  .portItem{
+  .contentBox{
+    position: absolute;
+    bottom: 8rem;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
     gap: 1rem;
   }
 
-
-  .imgCont{
-    width: 60vw;
-    max-width: 50rem;
+  .contentBox p{
+    background-color: rgba(0, 0, 0, .6);
+    margin: 0;
+    color: white;
   }
 
-  .img{
-    width: 100%;
-    border-radius: 50px;
+  .contentBox a{
+    background-color: rgba(0, 0, 0, .6);
   }
-
-  .content{
-    margin-left: 5vw;
-    margin-right: 5vw;
-  }
-
-  .turn{
-    background-color: black;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 99;
-    display: none;
-  }
-
-  .glowEl {
-  color: black;
-  text-shadow:    
-      0 0 5px #fff,
-      0 0 10px #fff,
-      0 0 21px #fff;
-  }
-
-  
-
-  /* @media (min-width: 1200px) {
-    .portContainer{
-      padding: 15vw;
-    }
-  } */
-
-  /* @media only screen and (orientation:portrait){
-    .turn{
-      display: flex;
-    }
-  } */
 
 </style>

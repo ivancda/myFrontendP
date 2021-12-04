@@ -1,36 +1,30 @@
 <template>
-  <div id="elContat" class="d-flex align-items-end justify-content-center contato p-3">
+  <div class="d-flex align-items-end justify-content-center contato">
 
 
     <div class="d-flex flex-column align-items-center justify-content-center contBox">
-      <!-- <h3 class="tit">Contato:</h3> -->
-      <div class="cardsBox d-flex align-items-center justify-content-center">
-        <div class="card col-md-4 mb-md-0">
-          <b-icon icon="map" class="mb-4" animation="cylon-vertical" font-scale="1.5"></b-icon>
-          <h4>ENDEREÇO</h4>
-          <hr class="my-5">
-          <div class="textCard">
-            <p>225, Rua Grajaú<br>Rio de Janeiro, RJ</p>
+        
+        <div class="card">
+          <!-- <div class="d-flex align-items-center">
+            <h4>ENDEREÇO</h4>
+            <b-icon icon="map" animation="cylon-vertical" font-scale="1.5"></b-icon>
           </div>
-        </div>
-        <div class="card col-md-4 mb-md-0">
-          <b-icon icon="mailbox" class="mb-4" animation="cylon-vertical" font-scale="1.5"></b-icon>
-          <h4>EMAIL</h4>
-          <hr class="my-5">
-          <div class="textCard">
-            <p>ivancda@gmail.com<br></p>
+          <p class="textCard">225, Rua Grajaú<br>Rio de Janeiro, RJ</p>
+          <hr> -->
+          <div class="d-flex align-item-center">
+            <h4>EMAIL</h4>
+            <b-icon icon="mailbox" animation="cylon-vertical" font-scale="1.5"></b-icon>
           </div>
-        </div>
-        <div class="card col-md-4 mb-md-0">
-          <b-icon icon="phone" class="mb-4" animation="cylon-vertical" font-scale="1.5"></b-icon>
-          <h4>TELEFONE</h4>
-          <hr class="my-5">
-          <div class="textCard">
-            <p>+55 (21) 97528-5936</p>
+          <p class="textCard">ivancda@gmail.com<br></p>
+          <hr>
+          <div class="d-flex align-item-center">
+            <h4>PHONE</h4>
+            <b-icon icon="phone" animation="cylon-vertical" font-scale="1.5"></b-icon>
           </div>
+          <p class="textCard">+55 (21) 97528-5936</p>
         </div>
-      </div>
-      <div class="linkBox d-flex align-items-center justify-content-center p-3">
+        
+      <div class="linkBox d-flex align-items-center justify-content-center">
         <a href="http://"><b-icon icon="facebook"></b-icon></a>
         <a href="http://"><b-icon icon="instagram"></b-icon></a>
         <a href="http://"><b-icon icon="linkedin"></b-icon></a>
@@ -46,23 +40,12 @@ export default {
 }
 </script>
 
-<style>
-
-  .tit{
-    margin-bottom: 3rem;
-  }
-
-  .contato{
-    height: 100vh;
-  }
+<style scoped>
 
   .contBox{
-    padding: 3rem;
-  }
-
-  .cardsBox{
-    color: black;
-    gap: 3vw;
+    position: absolute;
+    bottom: 2rem;
+    z-index: 1;
   }
 
   .card{
@@ -70,11 +53,11 @@ export default {
     flex-direction: column;
     align-items: center;
     background-color: white;
-    padding: 2rem;
+    padding: 1rem;
+    width: 14rem;
     border-radius: 2rem 2rem 0.5rem 0.5rem;
     border-bottom: .5rem solid black;
     text-align: center;
-    height: 20rem;
   }
 
   .card hr{
@@ -86,7 +69,10 @@ export default {
   .card h4{
     letter-spacing: .5rem;
     font-weight: 900;
+    color: black;
+    margin: 0;
   }
+
 
   .textCard{
     height: 100%;
@@ -94,11 +80,13 @@ export default {
     flex-direction: column;
     align-self: center;
     justify-content: center;
+    color: black;
+    margin: 0;
   }
 
   .linkBox{
-    gap: 3rem;
-    margin-top: 4rem;
+    gap: 1rem;
+    margin-top: 1rem;
   }
 
   .linkBox a{
@@ -106,7 +94,6 @@ export default {
     align-items: center;
     justify-content: center;
     height: 2rem;
-    width: 2rem;
     background-color: white;
     color: black;
     padding: .5rem;

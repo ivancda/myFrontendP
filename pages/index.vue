@@ -1,21 +1,38 @@
 <template>
 
-  <div >
+  <main >
 
     <Scene :pos="gotoPos"/>
     
-    <div class="devBox">
-      <button @click="backward">backward </button>
-      <button @click="foward">foward </button>
+    <div v-show="gotoPos>0" class="controlBox">
+      <button @click="backward">previous</button>
+      <button @click="foward">next</button>
     </div>
 
-    <main class="mainbox">
-      <Header/>
-      <Portfolio/>
-      <!-- <Contato/> -->
-    </main>
+    <div class="mainbox">
+      <Header 
+      v-if="gotoPos===0"
+      />
+      <Portfolio 
+      v-if="gotoPos>0"
+      :pos="gotoPos"
+      />
+      <About 
+      v-if="gotoPos===-2"
+      />
+      <Contato
+      v-if="gotoPos===-1"
+      />
+    </div>
 
-  </div>
+    <div class="buttonBox d-flex align-items-center justify-content-center">
+      <button v-show="gotoPos!==0" @click="setPos(0)">Home</button>
+      <button v-show="gotoPos<=0" @click="setPos(1)">Portfolio</button>
+      <button v-show="gotoPos!==-2" @click="setPos(-2)">About</button>
+      <button v-show="gotoPos!==-1" @click="setPos(-1)">Get in touch</button>
+    </div>
+
+  </main>
 
 </template>
 
@@ -30,7 +47,7 @@
 
   data() {
     return {
-      gotoPos: '0',
+      gotoPos: 0,
     }
   },
 
@@ -39,18 +56,28 @@
 
   methods: {
     foward(){
-      const newPos = +this.gotoPos
-      if (newPos<5) {
-       this.gotoPos = `${newPos+1}`
+      const newPos = this.gotoPos
+      if (newPos<8) {
+        this.gotoPos = newPos+1
+      }
+      else{
+        this.gotoPos = 1
       }
     },
 
     backward(){
-      const newPos = +this.gotoPos
-      if (newPos>0) {
-       this.gotoPos = `${newPos-1}`
+      const newPos = this.gotoPos
+      if (newPos>1) {
+        this.gotoPos = newPos-1
+      }
+      else{
+        this.gotoPos = 8
       }
 
+    },
+
+    setPos(pos){
+      this.gotoPos = pos
     }
   },
 
@@ -58,42 +85,35 @@
 </script>
 
 <style scoped>
-  @font-face {
-    font-family: mainFont;
-    src: url('../assets/fonts/Montserrat-Regular.ttf');
-  }
-    
 
-  *{
-    font-size: 18px;
-    font-family: mainFont;
-    padding:0;
-    margin: 0;
-    color: white;
-  }
-
-  .mainbox{
-    
-    width: 100%;
-
-
-  }
-
-  main{
+  .controlBox{
+    width: 10rem;
     position: absolute;
-    top: 0;
-    left: 0;
-    /* z-index: 99; */
+    bottom: 10vh;
+    left: calc(50vw - 5rem);
+    z-index: 1;
   }
-
-  .devBox{
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-  }
-  .devBox button{
+  .controlBox button{
     color: black;
+  }
+
+  .buttonBox{
+    width: 40vw;
+    color: white;
+    font-size: 2rem;
+    padding-top: .5rem;
+    gap: 2rem;
+    color: #FFFFFF;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: calc(50vw - 20vw);
+  }
+  
+  .buttonBox button{
+    color: white;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, .6);
   }
 
   
