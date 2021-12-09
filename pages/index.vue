@@ -89,7 +89,7 @@
   .controlBox{
     width: 10rem;
     position: absolute;
-    bottom: 3rem;
+    bottom: 2rem;
     left: calc(50vw - 5rem);
     z-index: 1;
   }

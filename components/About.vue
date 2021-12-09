@@ -27,6 +27,7 @@ export default {
     bottom: 0rem;
     z-index: 1;
     padding: 1rem;
+    width: 100%;
   }
 
   .aboutContent p{

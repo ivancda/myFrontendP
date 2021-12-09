@@ -52,7 +52,7 @@ export default {
           nome: 'This website.',
           linkRepo: 'https://github.com/ivancda/myFrontendP',
           linkLive: '',
-          descricao: 'Made with Three.js and GSAP on nuxt.js1.',
+          descricao: 'Made with Three.js and GSAP on nuxt.js.',
         },
         {
           nome: 'Hotel API Rest',
@@ -125,22 +125,28 @@ export default {
 
   .contentBox{
     position: absolute;
-    bottom: 5rem;
+    bottom: 3.5rem;
     z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: baseline;
     padding: 1rem;
+    width: 100%;
+    max-width: 30rem;
   }
 
   .contentBox p{
     background-color: rgba(0, 0, 0, .6);
     margin: 0;
     color: white;
+    font-size: .8rem;
+
   }
 
   .description{
-    margin-bottom: 1rem !important;
+    margin-bottom: .8rem !important;
+    text-align: center;
+
   }
 
   /* .contentBox a{
