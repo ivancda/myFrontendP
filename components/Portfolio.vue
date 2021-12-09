@@ -49,10 +49,10 @@ export default {
           descricao: '3 section Loopstudios landing page, CSS is on point.',
         },
         {
-          nome: 'This website!',
+          nome: 'This website.',
           linkRepo: 'https://github.com/ivancda/myFrontendP',
           linkLive: '',
-          descricao: 'Made with Three.js and GSAP on nuxt.js!',
+          descricao: 'Made with Three.js and GSAP on nuxt.js1.',
         },
         {
           nome: 'Hotel API Rest',
@@ -64,7 +64,7 @@ export default {
           nome: 'Todo APP',
           linkRepo: 'https://github.com/ivancda/frontendMentor6',
           linkLive: 'https://ivancda.github.io/frontendMentor6/',
-          descricao: 'A todo app made with vanilla js, drag and drop, active states and 2 themes!',
+          descricao: 'A todo app made with vanilla js, drag and drop, active states and 2 themes.',
         },
         {
           nome: 'NBA SQL Database',
