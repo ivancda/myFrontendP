@@ -28,10 +28,18 @@ export default {
   .titleBox{
     display: flex;
     flex-direction: column;
-    padding: .5rem;
-    border: 1px solid white;
+    padding: 1rem 1.9rem 1rem 1.9rem;
+    border: .3rem solid white;
     color: #FFFFFF;
     background-color: rgba(0, 0, 0, .6);
+  }
+
+  .titleBox h1{
+    font-size: 2rem;
+  }
+
+  .titleBox h2{
+    font-size: 1.5rem;
   }
 
 </style>

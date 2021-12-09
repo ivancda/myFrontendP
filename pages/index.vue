@@ -57,7 +57,7 @@
   methods: {
     foward(){
       const newPos = this.gotoPos
-      if (newPos<8) {
+      if (newPos<6) {
         this.gotoPos = newPos+1
       }
       else{
@@ -71,7 +71,7 @@
         this.gotoPos = newPos-1
       }
       else{
-        this.gotoPos = 8
+        this.gotoPos = 6
       }
 
     },
@@ -89,7 +89,7 @@
   .controlBox{
     width: 10rem;
     position: absolute;
-    bottom: 10vh;
+    bottom: 3rem;
     left: calc(50vw - 5rem);
     z-index: 1;
   }

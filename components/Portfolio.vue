@@ -6,11 +6,11 @@
     </div>
 
     <div class="contentBox">
-      <p>{{ desc }}</p>
-        <div class="d-flex flex-column">
-          <a href="">repo</a>
-          <a href="">live page</a>
-        </div>
+      <p class="description">{{ desc }}</p>
+    <div class="align-self-center">
+      <p v-show="link1!==''">Check the <a :href="link1">code</a>!</p>
+      <p v-show="link2!==''">Check the <a :href="link2">live page</a>!</p>
+    </div>
     </div>
 
   </div>
@@ -30,32 +30,47 @@ export default {
   data(){
     return {
 
-      title:'1',
-      desc:'2',
-      link1:'3',
-      link2:'4',  
+      title:'',
+      desc:'',
+      link1:'',
+      link2:'',  
 
       projetos: [
         {
           nome: 'IP Address Tracker',
-          linkImg: 'https://raw.githubusercontent.com/ivancda/frontendMentor7/main/screen.png',
-          linkRepo: '',
-          linkLive: '',
-          descricao: 'Ip geolocation tracker',
+          linkRepo: 'https://github.com/ivancda/frontendMentor7',
+          linkLive: 'https://ivancda.github.io/frontendMentor7/',
+          descricao: 'Ip geolocation tracker using GeoIP API and Leaflet API.',
         },
         {
           nome: 'Loopstudios Landing Page',
-          linkImg: 'https://raw.githubusercontent.com/ivancda/frontendMentor2/main/screen.png',
           linkRepo: 'https://github.com/ivancda/frontendMentor2',
           linkLive: 'https://ivancda.github.io/frontendMentor2/',
-          descricao: '3 section landing page',
+          descricao: '3 section Loopstudios landing page, CSS is on point.',
         },
         {
-          nome: '3',
-          linkImg: 'https://raw.githubusercontent.com/ivancda/frontendMentor2/main/screen.png',
-          linkRepo: 'https://github.com/ivancda/frontendMentor2',
-          linkLive: 'https://ivancda.github.io/frontendMentor2/',
-          descricao: '3',
+          nome: 'This website!',
+          linkRepo: 'https://github.com/ivancda/myFrontendP',
+          linkLive: '',
+          descricao: 'Made with Three.js and GSAP on nuxt.js!',
+        },
+        {
+          nome: 'Hotel API Rest',
+          linkRepo: 'https://github.com/ivancda/hotelAPIrest',
+          linkLive: '',
+          descricao: 'An API Rest using node.js (express).',
+        },
+        {
+          nome: 'Todo APP',
+          linkRepo: 'https://github.com/ivancda/frontendMentor6',
+          linkLive: 'https://ivancda.github.io/frontendMentor6/',
+          descricao: 'A todo app made with vanilla js, drag and drop, active states and 2 themes!',
+        },
+        {
+          nome: 'NBA SQL Database',
+          linkRepo: 'https://github.com/ivancda/resilia-modulo3',
+          linkLive: '',
+          descricao: 'Database modeling and manipulation usin Mysql Workbench',
         },
       ]
     }
@@ -64,7 +79,7 @@ export default {
   watch:{
     pos(val){
       // console.log(val)
-      if (val<4) {
+      if (val<7) {
         this.portContent(val)
       }
     },
@@ -110,12 +125,12 @@ export default {
 
   .contentBox{
     position: absolute;
-    bottom: 8rem;
+    bottom: 5rem;
     z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: baseline;
-    gap: 1rem;
+    padding: 1rem;
   }
 
   .contentBox p{
@@ -124,8 +139,12 @@ export default {
     color: white;
   }
 
-  .contentBox a{
-    background-color: rgba(0, 0, 0, .6);
+  .description{
+    margin-bottom: 1rem !important;
   }
+
+  /* .contentBox a{
+    background-color: rgba(0, 0, 0, .6);
+  } */
 
 </style>
