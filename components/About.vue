@@ -7,7 +7,7 @@
         Passionate about technology and art, I want to provide a web experience that is more than just a classic website, something that conveys true aesthetic beauty and can connect with the user discovery process.
       </p>
       <p> 
-        This app was made as an exercise to train the use of advanced libraries along with three.js, and I took the opportunity to use it to show a little of my work. I'll be updating and bringing new features in the future. Thank you!
+        This app was made as an exercise to train the use of advanced libraries along with three.js, and I took the opportunity to show some of my creations. I'll be updating and bringing new features in the future. Thank you!
       </p>
     </div>
 
